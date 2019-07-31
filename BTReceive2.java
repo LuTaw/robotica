@@ -26,24 +26,25 @@ public class BTReceive2 extends Thread {
  	public BTReceive2() {}
 
 	@Override
-    public void run()
+    	public void run()
 	{
 		final UltrasonicSensor ultraSonic = new UltrasonicSensor(SensorPort.S4);
 
 		String connected = "Connected";
-        String waiting = "Waiting...";
-        String closing = "Closing...";
+        	String waiting = "Waiting...";
+        	String closing = "Closing...";
+		boolean isConnected = false;
+        	BTConnection btc;
 
-//		while (true)
-//		{
-			LCD.drawString(waiting,0,0);
-			LCD.refresh();
+		LCD.drawString(waiting,0,0);
+		LCD.refresh();
+		btc = Bluetooth.waitForConnection();
 
-	        BTConnection btc = Bluetooth.waitForConnection();
-
-			LCD.clear();
-			//LCD.drawString(connected,0,0);
-			LCD.refresh();
+		LCD.clear();
+		//LCD.drawString(connected,0,0);
+		LCD.refresh();
+		while (true)
+		{
 
 			DataInputStream dis = btc.openDataInputStream();
 			DataOutputStream dos = btc.openDataOutputStream();
@@ -68,11 +69,11 @@ public class BTReceive2 extends Thread {
 
 				dis.close();
 				dos.close();
-				try {
-	                Thread.sleep(100);
-	            } catch (InterruptedException e) {
-	                e.printStackTrace();
-	            }
+				/*try {
+	                		Thread.sleep(100);
+            			} catch (InterruptedException e) {
+	                		e.printStackTrace();
+	            		}*/ 
 				//Thread.sleep(100); // wait for data to drain
 				LCD.clear();
 				LCD.drawString(closing,0,0);
@@ -80,8 +81,8 @@ public class BTReceive2 extends Thread {
 				btc.close();
 				LCD.clear();
 			} catch (IOException e) {
-	                e.printStackTrace();
+	                	e.printStackTrace();
 			}
-//		}
+		}
 	}
 }

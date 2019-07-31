@@ -3,9 +3,13 @@ import lejos.util.Delay;
 
 public class Agarrar
 {
-    public static void main (String[] args)
+    public Agarrar() {}
+
+    public void agarrar()
     {
-        Motor.A.backward();
-        msDelay(1000);
+	Motor.B.setSpeed(100);
+        Motor.B.backward();
+        Delay.msDelay(200);
+	Motor.B.stop();
     }
 }

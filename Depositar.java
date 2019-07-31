@@ -6,6 +6,6 @@ public class Depositar
     public static void main (String[] args)
     {
         Motor.A.forward();
-        msDelay(1000);
+        Delay.msDelay(1000);
     }
 }
