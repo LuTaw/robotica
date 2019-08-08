@@ -7,12 +7,19 @@ import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.comm.NXTConnection;
 
+import lejos.nxt.UltrasonicSensor;
+
+//import lejos.nxt.addon.OpticalDistanceSensor;
+import lejos.nxt.SensorPort;
+
 public class BTConnectTest2 extends Thread {
-	
+
 	public BTConnectTest2() {}
 
-	public void run() 
+	public void run()
 	{
+		final UltrasonicSensor ojoDerecho = new UltrasonicSensor(SensorPort.S2);
+
 		boolean isConnected = false;
 		BTConnection btc;
 
@@ -22,8 +29,8 @@ public class BTConnectTest2 extends Thread {
 		LCD.refresh();
 
 		RemoteDevice btrd = Bluetooth.getKnownDevice(name);
-		
-			if (btrd == null) 
+
+			if (btrd == null)
 			{
 				LCD.clear();
 				LCD.drawString("No such device", 0, 0);
@@ -34,14 +41,14 @@ public class BTConnectTest2 extends Thread {
 	                		e.printStackTrace();
 	            		}
 				System.exit(1);
-		
+
 			}
 
 
 			final byte[] pin = {(byte) '1', (byte) '2', (byte) '3', (byte) '4'};
 			btc = Bluetooth.connect(btrd.getDeviceAddr(),  NXTConnection.LCP, pin);
 
-			if (btc == null) 
+			if (btc == null)
 			{
 				LCD.clear();
 				LCD.drawString("Connect fail", 0, 0);
@@ -59,50 +66,51 @@ public class BTConnectTest2 extends Thread {
 			isConnected = true;
 			LCD.refresh();
 
-			while (true) 
+			//DataInputStream dis = btc.openDataInputStream();
+
+
+			while (Button.ESCAPE.isUp())
 			{
-				try 
+				try
 				{
-					DataInputStream dis = btc.openDataInputStream();
+					/*int distDer = ojoDerecho.getDistance();
+
+					LCD.drawInt(distDer,8,0,1);
+					LCD.refresh();*/
 					DataOutputStream dos = btc.openDataOutputStream();
-					LCD.drawString("Master",1,1);
-					LCD.refresh();
-					dos.writeByte(7);
+					String distDer = "48962";
+					dos.writeUTF(distDer);
 					dos.flush();
 
-					try 
+					dos.close();
+					/*try
 					{
 						Thread.sleep(3000);
 			    		} catch (InterruptedException e) {
 						e.printStackTrace();
-				    	}
+					}
 
-					int coso = (int) dis.readByte();
-					LCD.drawInt(coso,8,0,1);
-
-					LCD.drawInt(dis.readInt(),8, 0,3);
-					LCD.refresh();
-
-					LCD.drawString("Closing...    ", 0, 0);
-					LCD.refresh();
-					dis.close();
-					dos.close();
-					btc.close();
-					LCD.clear();
-					LCD.drawString("Finished",3, 4);
-					LCD.refresh();
 					try {
 					        Thread.sleep(2000);
-				    	} catch (InterruptedException e) 
+				    	} catch (InterruptedException e)
 					{
 			        		e.printStackTrace();
-			    		}	
+			    		}*/
 
 				} catch (IOException ioe) {
 					LCD.drawString("Write Exception", 0, 0);
 					LCD.refresh();
 				}
 			}
-		
+
+			LCD.drawString("Closing...    ", 0, 0);
+			LCD.refresh();
+			//dis.close();
+
+			btc.close();
+			LCD.clear();
+			LCD.drawString("Finished",3, 4);
+			LCD.refresh();
+
 	}
 }

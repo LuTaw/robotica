@@ -3,12 +3,14 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.*;
 
+import lejos.nxt.Motor;
+
 import lejos.nxt.LCD;
 import lejos.nxt.Button;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
 
-import lejos.nxt.UltrasonicSensor;
+//import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.SensorPort;
 /**
  * Receive data from another NXT, a PC, a phone,
@@ -22,13 +24,14 @@ import lejos.nxt.SensorPort;
  *
  */
 public class BTReceive2 extends Thread {
- 
+
  	public BTReceive2() {}
 
 	@Override
     	public void run()
 	{
-		final UltrasonicSensor ultraSonic = new UltrasonicSensor(SensorPort.S4);
+		//final UltrasonicSensor ultraSonic = new UltrasonicSensor(SensorPort.S4);
+
 
 		String connected = "Connected";
         	String waiting = "Waiting...";
@@ -43,43 +46,42 @@ public class BTReceive2 extends Thread {
 		LCD.clear();
 		//LCD.drawString(connected,0,0);
 		LCD.refresh();
-		while (true)
+		while (Button.ESCAPE.isUp())
 		{
 
-			DataInputStream dis = btc.openDataInputStream();
-			DataOutputStream dos = btc.openDataOutputStream();
-			try 
+
+			//DataOutputStream dos = btc.openDataOutputStream();
+			try
 			{
-				int coso = (int) dis.readByte();
-				if (coso == 7)
+        DataInputStream dis = btc.openDataInputStream();
+				String coso = dis.readUTF();
+        System.out.println(coso);
+        //LCD.drawInt(coso.toInt(),8,0,1);
+
+        //LCD.refresh();
+        /*Motor.A.resetTachoCount();
+				if (coso < 10)
 				{
-					LCD.drawInt(ultraSonic.getDistance(),8,0,1);
+          Motor.A.rotateTo(180,true);
+					/*LCD.drawInt(ultraSonic.getDistance(),8,0,1);
 					dos.writeByte(ultraSonic.getDistance());
 					dos.flush();
-				}
-				//LCD.drawInt(coso,8,0,1);
-				/*for(int i=0;i<100;i++) {
-					int n = dis.readInt();
-					LCD.drawInt(n,7,0,1);
-					LCD.refresh();
-					dos.writeInt(-n);
-					dos.flush();
 				}*/
-				Button.waitForAnyPress();
+
 
 				dis.close();
-				dos.close();
+				//dos.close();
 				/*try {
 	                		Thread.sleep(100);
             			} catch (InterruptedException e) {
 	                		e.printStackTrace();
-	            		}*/ 
+	            		}*/
 				//Thread.sleep(100); // wait for data to drain
-				LCD.clear();
-				LCD.drawString(closing,0,0);
-				LCD.refresh();
-				btc.close();
-				LCD.clear();
+				/*LCD.clear();
+				LCD.drawString(closing,0,0);*/
+				//LCD.refresh();
+				//btc.close();
+				//LCD.clear();
 			} catch (IOException e) {
 	                	e.printStackTrace();
 			}
