@@ -8,6 +8,7 @@ import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.comm.NXTConnection;
 
 import lejos.nxt.UltrasonicSensor;
+import lejos.nxt.OpticalDistanceSensor;
 
 //import lejos.nxt.addon.OpticalDistanceSensor;
 import lejos.nxt.SensorPort;
@@ -19,6 +20,9 @@ public class BTConnectTest2 extends Thread {
 	public void run()
 	{
 		final UltrasonicSensor ojoDerecho = new UltrasonicSensor(SensorPort.S2);
+		final UltrasonicSensor ojoIzquierdo = new UltrasonicSensor(SensorPort.S1);
+		final UltrasonicSensor ojoPlataforma = new UltrasonicSensor(SensorPort.S3);
+		final OpticalDistanceSensor ojoTubos = new OpticalDistanceSensor(SensorPort.S4);
 
 		boolean isConnected = false;
 		BTConnection btc;
@@ -78,7 +82,7 @@ public class BTConnectTest2 extends Thread {
 					LCD.drawInt(distDer,8,0,1);
 					LCD.refresh();*/
 					DataOutputStream dos = btc.openDataOutputStream();
-					String distDer = "48962";
+					String distDer = ojoDerecho.getDistance()+"-"+ojoIzquierdo.getDistance()+"-"+ojoPlataforma.getDistance+"-"+ojoTubos.getDistance;
 					dos.writeUTF(distDer);
 					dos.flush();
 

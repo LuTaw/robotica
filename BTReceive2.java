@@ -54,8 +54,14 @@ public class BTReceive2 extends Thread {
 			try
 			{
         DataInputStream dis = btc.openDataInputStream();
-				String coso = dis.readUTF();
-        System.out.println(coso);
+		String distancias = dis.readUTF();
+        String[] dist = distancias.split("-");
+        int ojoDer = (int) dist[0];
+        int ojoIzq = (int) dist[1];
+        int ojoPla = (int) dist[2];
+        int ojoTub = (int) dist[3];
+
+        System.out.println(ojoTub+"-"+ojoPla+"-"+ojoIzq+"-"+ojoDer);
         //LCD.drawInt(coso.toInt(),8,0,1);
 
         //LCD.refresh();
