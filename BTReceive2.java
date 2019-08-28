@@ -55,13 +55,13 @@ public class BTReceive2 extends Thread {
 			{
         DataInputStream dis = btc.openDataInputStream();
 		String distancias = dis.readUTF();
-        String[] dist = distancias.split("-");
+	/*String separador = "-";
+        String[] dist = distancias.split(separador);
         int ojoDer = (int) dist[0];
         int ojoIzq = (int) dist[1];
         int ojoPla = (int) dist[2];
         int ojoTub = (int) dist[3];
-
-        System.out.println(ojoTub+"-"+ojoPla+"-"+ojoIzq+"-"+ojoDer);
+        System.out.println(ojoTub+"-"+ojoPla+"-"+ojoIzq+"-"+ojoDer);*/
         //LCD.drawInt(coso.toInt(),8,0,1);
 
         //LCD.refresh();

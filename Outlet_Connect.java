@@ -12,6 +12,7 @@ import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.PilotProps;
 import lejos.nxt.TouchSensor;
+import lejos.nxt.addon.OpticalDistanceSensor;
 
 import java.util.Random;
 
@@ -26,11 +27,13 @@ public class Outlet_Connect {
 	private static OpticalDistanceSensor ojoTubos = new OpticalDistanceSensor(SensorPort.S3);
 	private static UltrasonicSensor ojoPlat = new UltrasonicSensor(SensorPort.S4);
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
 		pigFactory = new BTConnectTest2();
 		pigFactory.start(); 
 
+		PilotProps pp = new PilotProps();
+		pp.loadPersistentValues();
 		float wheelDiameter = Float.parseFloat(pp.getProperty(PilotProps.KEY_WHEELDIAMETER, "5.7"));
 		float trackWidth = Float.parseFloat(pp.getProperty(PilotProps.KEY_TRACKWIDTH, "14.5"));
 		RegulatedMotor leftMotor = PilotProps.getMotor(pp.getProperty(PilotProps.KEY_LEFTMOTOR, "C"));
@@ -96,59 +99,153 @@ public class Outlet_Connect {
 			
 		};
 
-			Behavior DriveForward2 = new Behavior() {
-				public boolean takeControl() {return false;}
-				public void suppress() {}
-				public void action() {}
-		/*		public boolean takeControl() {
-					if ((light.readValue() <= 40 && isAvoidingObstacle)) {
-						System.out.println("Estamos en el take control driveForward2");
-						System.out.println("=========");
-					}
-					return (light.readValue() <= 40 && isAvoidingObstacle);
-				}
-	
-				public void suppress() {
-					sn.stop();
-				}
-	
-				public void action() {
-					isAvoidingObstacle = false;
-	    				pilot.rotate(-60);
-					pilot.stop();
-					try {
-						Thread.sleep(2000);
-					} catch (InterruptedException ie) {
-						Thread.currentThread().interrupt();
-					}						
-					
-					sn.arc(20,90);
-				}
-		*/	};
+		Behavior DetectarTubo = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
 			
+		};
+
+		Behavior DectetarFaltaTubo = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
 			
+		};
+
+		Behavior MedirTamañoTuboFaltante = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
+			
+		};
+
+		Behavior EncontrarCanieria = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
+			
+		};
+
+		Behavior DetectarColor = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
+			
+		};
+
+		Behavior NoCaerseEnNegro = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
+			
+		};
+
+		Behavior VolverARumbo = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
+			
+		};
 
 
-			Behavior stopRobot = new Behavior() {
-				public boolean takeControl() {return false;}
-				public void suppress() {}
-				public void action() {}
+		Behavior PararRobot = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
 
-               		/*	public boolean takeControl() {
-					return touchSensor.isPressed();
-				}
-				
-				public void suppress() {
-					System.exit(0);
-				}
-	
-				public void action() {
-					pilot.stop();
-					System.exit(0);
-				}
-		*/	};
+			public void suppress() 
+			{
+				System.exit(0);
+			}
 
-		Behavior[] bArray = { OffLine, DriveForward, AvoidObstacle, DriveForward2, stopRobot };
+			public void action() 
+			{
+				pilot.stop();
+				System.exit(0);
+			}
+			
+		};
+
+		Behavior[] bArray = { NoCaerseEnNegro, AgarrarTubo, PararRobot, VolverARumbo, DetectarColor, EncontrarCanieria, MedirTamañoTuboFaltante, DectetarFaltaTubo, Moverse, DejarTubo };
 		Button.waitForAnyPress();
 		(new Arbitrator(bArray)).start();
   	}
