@@ -7,27 +7,59 @@ import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.comm.NXTConnection;
 
-import lejos.nxt.UltrasonicSensor;
-import lejos.nxt.addon.OpticalDistanceSensor;
+import lejos.util.Delay;
 
-//import lejos.nxt.addon.OpticalDistanceSensor;
-import lejos.nxt.SensorPort;
-
-public class BTConnectTest2 extends Thread {
+public class BTConnectTest2
+{
 
 	private static ManejadorConexion mConexion;
+	private static BTConnection btc;
 
-	public BTConnectTest2() {}
-
-	public void run()
-	{
-		final UltrasonicSensor ojoDerecho = new UltrasonicSensor(SensorPort.S2);
-		final UltrasonicSensor ojoIzquierdo = new UltrasonicSensor(SensorPort.S1);
-		final UltrasonicSensor ojoPlataforma = new UltrasonicSensor(SensorPort.S3);
-		final OpticalDistanceSensor ojoTubos = new OpticalDistanceSensor(SensorPort.S4);
-
+	public BTConnectTest2() {
 		mConexion = new ManejadorConexion();
-		BTConnection btc = mConexion.getConexion();
+		btc = mConexion.getConexion();
+	}
 
+	public int getDistanceOjosTubos()
+	{
+		System.out.println("antes de tomar las medidas del sensor ded distancia");
+		return this.getDistance(4);
+	}
+
+	public int getDistanceOjosPlat()
+	{
+		return this.getDistance(3);
+	}
+
+	public int getDistanceOjosPlatDerecha()
+	{
+		return this.getDistance(2);
+	}
+
+	public int getDistanceOjosPlatIzquierda()
+	{
+		return this.getDistance(1);
+	}
+
+	private int getDistance(int sensorPort) 
+	{
+		int sensorValue = 0;
+		try {
+			DataOutputStream dos = btc.openDataOutputStream();
+			DataInputStream dis = btc.openDataInputStream();
+			System.out.println("antes de enviar puerto");
+			dos.writeByte(sensorPort);
+			System.out.println("despues de enviar puerto");
+			Delay.msDelay(500);
+			System.out.println("antes de leer distancia");
+			sensorValue = (int) dis.readByte();
+			dos.flush();
+			dos.close();
+			dis.close();
+		} catch (Exception e) {
+		System.out.println("exception");
+			e.printStackTrace();
+		}	
+		return sensorValue;
 	}
 }

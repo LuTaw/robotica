@@ -17,12 +17,12 @@ public class ManejadorConexion
 	public static BTConnection getConexion() {
 		if (!isConnected) {
 		
-		String name = "NXT";
+			String name = "NXT";
 
-		LCD.drawString("Connecting...", 0, 0);
-		LCD.refresh();
+			LCD.drawString("Connecting...", 0, 0);
+			LCD.refresh();
 
-		RemoteDevice btrd = Bluetooth.getKnownDevice(name);
+			RemoteDevice btrd = Bluetooth.getKnownDevice(name);
 
 			if (btrd == null)
 			{

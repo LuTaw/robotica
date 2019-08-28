@@ -30,8 +30,25 @@ public class Outlet_Connect {
 	public static void main(String[] args) throws Exception {
 
 		pigFactory = new BTConnectTest2();
-		pigFactory.start(); 
+		
+		System.out.println("antes de tomar las medidas del sensor ded distancia");
+		int ot = pigFactory.getDistanceOjosTubos();
+		System.out.println("ot value is: ");
+		System.out.println(ot);
+		
+		int op = pigFactory.getDistanceOjosPlat();
+		System.out.println("op value is: ");
+		System.out.println(op);
+		int opd = pigFactory.getDistanceOjosPlatDerecha();
+		System.out.println("opd value is: ");
+		System.out.println(opd);
+		int opi = pigFactory.getDistanceOjosPlatIzquierda();
+		System.out.println("opi value is: ");
+		System.out.println(opi);
 
+		Button.ENTER.waitForPressAndRelease();
+ 
+/*
 		PilotProps pp = new PilotProps();
 		pp.loadPersistentValues();
 		float wheelDiameter = Float.parseFloat(pp.getProperty(PilotProps.KEY_WHEELDIAMETER, "5.7"));
@@ -46,8 +63,8 @@ public class Outlet_Connect {
 		Behavior AgarrarTubo = new Behavior() {
 			
 			public boolean takeControl() 
-			{         
-				return (ojoTubos.getDistance() / 10) < 4; 
+			{
+				return (pigFactory.getDistanceOjosTubos() / 10) < 4; 
 			}
 
 			public void suppress() 
@@ -66,7 +83,7 @@ public class Outlet_Connect {
 			
 			public boolean takeControl() 
 			{
-				return ojoPlat.getDistance() < 12;
+				return pigFactory.getDistanceOjosPlat() < 12;
 			}
 		
 			public void suppress() {}
@@ -248,5 +265,6 @@ public class Outlet_Connect {
 		Behavior[] bArray = { NoCaerseEnNegro, AgarrarTubo, PararRobot, VolverARumbo, DetectarColor, EncontrarCanieria, MedirTamañoTuboFaltante, DectetarFaltaTubo, Moverse, DejarTubo };
 		Button.waitForAnyPress();
 		(new Arbitrator(bArray)).start();
+*/
   	}
 }

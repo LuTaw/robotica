@@ -10,8 +10,11 @@ import lejos.nxt.Button;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
 
-//import lejos.nxt.UltrasonicSensor;
+import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.SensorPort;
+import lejos.nxt.addon.OpticalDistanceSensor;
+
+import lejos.util.Delay;
 /**
  * Receive data from another NXT, a PC, a phone,
  * or another bluetooth device.
@@ -20,7 +23,6 @@ import lejos.nxt.SensorPort;
  * its negative as a reply, 100 times, and then closes
  * the connection, and waits for a new one.
  *
- * @author Lawrie Griffiths
  *
  */
 public class BTReceive2 extends Thread {
@@ -30,8 +32,10 @@ public class BTReceive2 extends Thread {
 	@Override
     	public void run()
 	{
-		//final UltrasonicSensor ultraSonic = new UltrasonicSensor(SensorPort.S4);
-
+		final UltrasonicSensor ultraSonic1 = new UltrasonicSensor(SensorPort.S1);
+		final UltrasonicSensor ultraSonic3 = new UltrasonicSensor(SensorPort.S3);
+		final UltrasonicSensor ultraSonic2 = new UltrasonicSensor(SensorPort.S2);
+		final OpticalDistanceSensor opticalDistance = new OpticalDistanceSensor(SensorPort.S4);
 
 		String connected = "Connected";
         	String waiting = "Waiting...";
@@ -44,7 +48,7 @@ public class BTReceive2 extends Thread {
 		btc = Bluetooth.waitForConnection();
 
 		LCD.clear();
-		//LCD.drawString(connected,0,0);
+		LCD.drawString(connected,0,0);
 		LCD.refresh();
 		while (Button.ESCAPE.isUp())
 		{
@@ -53,8 +57,32 @@ public class BTReceive2 extends Thread {
 			//DataOutputStream dos = btc.openDataOutputStream();
 			try
 			{
-        DataInputStream dis = btc.openDataInputStream();
-		String distancias = dis.readUTF();
+				DataInputStream dis = btc.openDataInputStream();
+        			DataOutputStream dos = btc.openDataOutputStream();
+				System.out.println("antes de leer el byte que recibe ");
+				/*try {
+	                		Thread.sleep(100);
+            			} catch (InterruptedException e) {
+	                		e.printStackTrace();
+	            		}*/
+				Delay.msDelay(500);
+				int sensorPort = (int) dis.readByte();
+				//Delay.msDelay(500);
+				System.out.println("el puerto que esta leyendo es: " + sensorPort);
+				int sensorValue;
+				if (sensorPort == 1)
+					sensorValue = ultraSonic1.getDistance();
+				else if (sensorPort == 2)
+					sensorValue = ultraSonic2.getDistance();
+				else if (sensorPort == 3)
+					sensorValue = ultraSonic3.getDistance();
+				else 
+					sensorValue = opticalDistance.getDistance();
+				
+				dos.writeByte(sensorValue);
+				dos.flush();
+				dos.close();
+				dis.close();
 	/*String separador = "-";
         String[] dist = distancias.split(separador);
         int ojoDer = (int) dist[0];
@@ -92,5 +120,6 @@ public class BTReceive2 extends Thread {
 	                	e.printStackTrace();
 			}
 		}
+		btc.close();
 	}
 }
