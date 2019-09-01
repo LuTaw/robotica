@@ -170,7 +170,8 @@ public class Outlet_Connect {
 				{
 					moverseRandom();
 				}
-				colorAnterior = colorAdelante.getColorID();
+				colorAnterior = colorActual;
+				colorActual = colorAdelante.getColorID();
 			}
 			
 		};
@@ -289,17 +290,22 @@ public class Outlet_Connect {
 		Behavior BuscarVerdeConTubo = new Behavior() {
 			public boolean takeControl() 
 			{
-				return false;
+				return (colorAdelante.getColorID() == 6 && tieneTubo && (colorAnterior == 3 || colorAnterior == 5 || colorAnterior == 4));
 			}
 
 			public void suppress() 
 			{
-
+				// no es necesario hacer nada
 			}
 
 			public void action() 
 			{
-
+				while (colorAdelante.getColorID() == 6)
+				{
+					moverseRandom();
+				}
+				colorAnterior = colorActual;
+				colorActual = colorAdelante.getColorID();
 			}
 			
 		};
