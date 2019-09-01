@@ -169,10 +169,10 @@ public class Outlet_Connect {
 		};
 
 		// estamos en negro, no tenemos tubo y tenemos guardado el color anterior
-		Behavior GoToRandom = new Behavior() {
+		Behavior NoCaerseEnNegro = new Behavior() {
 			public boolean takeControl() 
 			{
-				return (!tieneTubo && colorAdelante.getColorID() == 1);
+				return (colorAdelante.getColorID() == 1);
 			}
 
 			public void suppress() 
@@ -312,26 +312,6 @@ public class Outlet_Connect {
 			
 		};
 
-		// Estamos en negro, tenemos tubo y sabemos color anterior
-		// probablemente los dos go to random son iguales por ahora lo renombro
-		Behavior GoToRandomSinTubo = new Behavior() {
-			public boolean takeControl() 
-			{
-				return false;
-			}
-
-			public void suppress() 
-			{
-
-			}
-
-			public void action() 
-			{
-
-			}
-			
-		};
-
 		// Estamos en azul, tenemos tubo y vimos espacio libre
 		Behavior EncontramosEspacioLibre = new Behavior() {
 			public boolean takeControl() 
@@ -371,25 +351,6 @@ public class Outlet_Connect {
 
 		// Va incluido en detectar falta de tubo
 		Behavior EncontrarCanieria = new Behavior() {
-			public boolean takeControl() 
-			{
-				return false;
-			}
-
-			public void suppress() 
-			{
-
-			}
-
-			public void action() 
-			{
-
-			}
-			
-		};
-
-		// este no estoy segura si va o queda cubierto con los goToRandom
-		Behavior NoCaerseEnNegro = new Behavior() {
 			public boolean takeControl() 
 			{
 				return false;
@@ -447,7 +408,7 @@ public class Outlet_Connect {
 			
 		};
 
-		Behavior[] bArray = { NoCaerseEnNegro, AgarrarTubo, PararRobot, GoToRandom, GoToRandomSinTubo, BuscarAzul, BuscarVerdeConTubo, BuscarVerde, BuscarBlancoConTubo, BuscarBlanco, BuscarTuberiaPrincipal, EncontrarCanieria, MedirTamañoTuboFaltante, EncontramosEspacioLibre, DejarTubo, EncontrarTubo, BuscarColor, DoblarSiguiendoTuberia};
+		Behavior[] bArray = { NoCaerseEnNegro, AgarrarTubo, PararRobot, BuscarAzul, BuscarVerdeConTubo, BuscarVerde, BuscarBlancoConTubo, BuscarBlanco, BuscarTuberiaPrincipal, EncontrarCanieria, MedirTamañoTuboFaltante, EncontramosEspacioLibre, DejarTubo, EncontrarTubo, BuscarColor, DoblarSiguiendoTuberia};
 		Button.waitForAnyPress();
 		(new Arbitrator(bArray)).start();
 
