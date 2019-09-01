@@ -48,11 +48,11 @@ public class BTConnectTest2
 			DataOutputStream dos = btc.openDataOutputStream();
 			DataInputStream dis = btc.openDataInputStream();
 			System.out.println("antes de enviar puerto");
-			dos.writeByte(sensorPort);
+			dos.writeInt(sensorPort);
 			System.out.println("despues de enviar puerto");
 			Delay.msDelay(500);
 			System.out.println("antes de leer distancia");
-			sensorValue = (int) dis.readByte();
+			sensorValue = (int) dis.readInt();
 			dos.flush();
 			dos.close();
 			dis.close();

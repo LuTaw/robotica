@@ -31,7 +31,7 @@ public class Outlet_Connect {
 
 		pigFactory = new BTConnectTest2();
 		
-		System.out.println("antes de tomar las medidas del sensor ded distancia");
+/*		System.out.println("antes de tomar las medidas del sensor ded distancia");
 		int ot = pigFactory.getDistanceOjosTubos();
 		System.out.println("ot value is: ");
 		System.out.println(ot);
@@ -45,10 +45,9 @@ public class Outlet_Connect {
 		int opi = pigFactory.getDistanceOjosPlatIzquierda();
 		System.out.println("opi value is: ");
 		System.out.println(opi);
-
-		Button.ENTER.waitForPressAndRelease();
+*/
  
-/*
+
 		PilotProps pp = new PilotProps();
 		pp.loadPersistentValues();
 		float wheelDiameter = Float.parseFloat(pp.getProperty(PilotProps.KEY_WHEELDIAMETER, "5.7"));
@@ -265,6 +264,6 @@ public class Outlet_Connect {
 		Behavior[] bArray = { NoCaerseEnNegro, AgarrarTubo, PararRobot, VolverARumbo, DetectarColor, EncontrarCanieria, MedirTamañoTuboFaltante, DectetarFaltaTubo, Moverse, DejarTubo };
 		Button.waitForAnyPress();
 		(new Arbitrator(bArray)).start();
-*/
+
   	}
 }
