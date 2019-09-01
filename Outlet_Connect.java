@@ -107,21 +107,25 @@ public class Outlet_Connect {
 		Behavior BuscarColor = new Behavior() {
 			public boolean takeControl() 
 			{
-				return false;
+				return pigFactory.getColorID == 6 && !tieneTubo; 
 			}
 
-			public void suppress() 
-			{
-				System.exit(0);
-			}
+			public void suppress() {}
 
 			public void action() 
 			{
-				pilot.stop();
-				System.exit(0);
+				tieneTubo = false;
+				colorAnterior = colorActual;
+				colorActual = colorAdelante.getColorID();
+				if (colorActual == 6 && colorAnterior != 0){
+					moverseRandom();
+				} else {
+					moverse();
+				}
 			}
 			
 		};
+
 
 		// estamos en verde y no tenemos tubo
 		Behavior BuscarBlanco = new Behavior() {
