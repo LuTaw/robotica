@@ -77,7 +77,7 @@ public class Outlet_Connect {
 
 			public void suppress() 
 			{
-				// no hay que hacer nada porque todas las accioens del action finalizan en el action.
+				suppress = true;
 			}
 				
 			public void action() 
@@ -103,7 +103,7 @@ public class Outlet_Connect {
 			}
 		};
 
-		// estamos en blano y no tenemos tubo
+		// estamos en blanco y no tenemos tubo
 		Behavior BuscarColor = new Behavior() {
 			public boolean takeControl() 
 			{
@@ -152,38 +152,47 @@ public class Outlet_Connect {
 		Behavior BuscarVerde = new Behavior() {
 			public boolean takeControl() 
 			{
-				return false;
+				return (!tieneTubo && colorAnterior == 3 && colorAdelante.getColorID() == 2);
 			}
 
 			public void suppress() 
 			{
-				System.exit(0);
+				suppress = true; 
 			}
 
 			public void action() 
 			{
 				pilot.stop();
-				System.exit(0);
+				this.mediaVuelta();
+				while (colorAdelante.getColorID() == 2)
+				{
+					this.moverseRandom();
+				}
+				colorAnterior = colorAdelante.getColorID();
 			}
 			
 		};
 
 		// estamos en negro, no tenemos tubo y tenemos guardado el color anterior
-		Behavior GoToRandom = new Behavior() {
+		Behavior NoCaerseEnNegro = new Behavior() {
 			public boolean takeControl() 
 			{
-				return false;
+				return (colorAdelante.getColorID() == 1);
 			}
 
 			public void suppress() 
 			{
-				System.exit(0);
+				suppress = true;
 			}
 
 			public void action() 
 			{
 				pilot.stop();
-				System.exit(0);
+				this.mediaVuelta();
+				while (colorAdelante.getColorID() == 1)
+				{
+					this.moverseRandom();
+				}
 			}
 			
 		};
@@ -308,26 +317,6 @@ public class Outlet_Connect {
 			
 		};
 
-		// Estamos en negro, tenemos tubo y sabemos color anterior
-		// probablemente los dos go to random son iguales por ahora lo renombro
-		Behavior GoToRandomSinTubo = new Behavior() {
-			public boolean takeControl() 
-			{
-				return false;
-			}
-
-			public void suppress() 
-			{
-
-			}
-
-			public void action() 
-			{
-
-			}
-			
-		};
-
 		// Estamos en azul, tenemos tubo y vimos espacio libre
 		Behavior EncontramosEspacioLibre = new Behavior() {
 			public boolean takeControl() 
@@ -367,25 +356,6 @@ public class Outlet_Connect {
 
 		// Va incluido en detectar falta de tubo
 		Behavior EncontrarCanieria = new Behavior() {
-			public boolean takeControl() 
-			{
-				return false;
-			}
-
-			public void suppress() 
-			{
-
-			}
-
-			public void action() 
-			{
-
-			}
-			
-		};
-
-		// este no estoy segura si va o queda cubierto con los goToRandom
-		Behavior NoCaerseEnNegro = new Behavior() {
 			public boolean takeControl() 
 			{
 				return false;
@@ -443,7 +413,7 @@ public class Outlet_Connect {
 			
 		};
 
-		Behavior[] bArray = { NoCaerseEnNegro, AgarrarTubo, PararRobot, GoToRandom, GoToRandomSinTubo, BuscarAzul, BuscarVerdeConTubo, BuscarVerde, BuscarBlancoConTubo, BuscarBlanco, BuscarTuberiaPrincipal, EncontrarCanieria, MedirTamañoTuboFaltante, EncontramosEspacioLibre, DejarTubo, EncontrarTubo, BuscarColor, DoblarSiguiendoTuberia};
+		Behavior[] bArray = { NoCaerseEnNegro, AgarrarTubo, PararRobot, BuscarAzul, BuscarVerdeConTubo, BuscarVerde, BuscarBlancoConTubo, BuscarBlanco, BuscarTuberiaPrincipal, EncontrarCanieria, MedirTamañoTuboFaltante, EncontramosEspacioLibre, DejarTubo, EncontrarTubo, BuscarColor, DoblarSiguiendoTuberia};
 		Button.waitForAnyPress();
 		(new Arbitrator(bArray)).start();
 
@@ -454,10 +424,15 @@ public class Outlet_Connect {
 		pilot.forward();
 	}
 
+	private void moverseRandom() 
+	{
+		pilot.forward();
+	}
+
 	private void mediaVuelta() 
 	{
 		pilot.stop();
-		pilot.rotate(180);
+		pilot.rotate(180, true);
 	}
 
 	private void girarDerecha() 
