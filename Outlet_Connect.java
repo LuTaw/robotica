@@ -77,7 +77,7 @@ public class Outlet_Connect {
 
 			public void suppress() 
 			{
-				// no hay que hacer nada porque todas las accioens del action finalizan en el action.
+				suppress = true;
 			}
 				
 			public void action() 
@@ -152,7 +152,7 @@ public class Outlet_Connect {
 
 			public void suppress() 
 			{
-				// no hay que hacer nada todas las accioens terminan en el action 
+				suppress = true; 
 			}
 
 			public void action() 
@@ -161,7 +161,7 @@ public class Outlet_Connect {
 				this.mediaVuelta();
 				while (colorAdelante.getColorID() == 2)
 				{
-					this.moverse();
+					this.moverseRandom();
 				}
 				colorAnterior = colorAdelante.getColorID();
 			}
@@ -172,18 +172,22 @@ public class Outlet_Connect {
 		Behavior GoToRandom = new Behavior() {
 			public boolean takeControl() 
 			{
-				return false;
+				return (!tieneTubo && colorAdelante.getColorID() == 1);
 			}
 
 			public void suppress() 
 			{
-				System.exit(0);
+				suppress = true;
 			}
 
 			public void action() 
 			{
 				pilot.stop();
-				System.exit(0);
+				this.mediaVuelta();
+				while (colorAdelante.getColorID() == 1)
+				{
+					this.moverseRandom();
+				}
 			}
 			
 		};
@@ -450,6 +454,11 @@ public class Outlet_Connect {
   	}
 
 	private void moverse() 
+	{
+		pilot.forward();
+	}
+
+	private void moverseRandom() 
 	{
 		pilot.forward();
 	}
