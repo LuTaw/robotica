@@ -24,12 +24,32 @@ public class Outlet_Connect {
 	private static UltrasonicSensor ojoPlat = new UltrasonicSensor(SensorPort.S4);*/
 	//private static LightSensor luzIzq = new LightSensor(SensorPort.S1);
 
-	private static OpticalDistanceSensor ojoTubos = new OpticalDistanceSensor(SensorPort.S3);
-	private static UltrasonicSensor ojoPlat = new UltrasonicSensor(SensorPort.S4);
+	/*private static OpticalDistanceSensor ojoTubos = new OpticalDistanceSensor(SensorPort.S3);
+	private static UltrasonicSensor ojoPlat = new UltrasonicSensor(SensorPort.S4);*/
+	private static final ColorSensor colorAdelante = new ColorSensor(SensorPort.S2);
 
-	public static void main(String[] args) throws Exception {
+	private boolean tieneTubo = false;
+	private int colorAnterior = 0;
+	private int colorActual = 0;
+	private int medidaTuboAgarrado = 0;
+
+
+	private final PilotProps pp = new PilotProps();
+	private final float wheelDiameter = Float.parseFloat(pp.getProperty(PilotProps.KEY_WHEELDIAMETER, "5.7"));
+	private final float trackWidth = Float.parseFloat(pp.getProperty(PilotProps.KEY_TRACKWIDTH, "14.5"));
+	private final RegulatedMotor leftMotor = PilotProps.getMotor(pp.getProperty(PilotProps.KEY_LEFTMOTOR, "C"));
+	private final RegulatedMotor rightMotor = PilotProps.getMotor(pp.getProperty(PilotProps.KEY_RIGHTMOTOR, "B"));
+	private final boolean reverse = Boolean.parseBoolean(pp.getProperty(PilotProps.KEY_REVERSE, "false"));
+	private final RotateMoveController pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftMotor, rightMotor, reverse);
+	private final LegacyNavigator sn = new LegacyNavigator(wheelDiameter, trackWidth, leftMotor, rightMotor);
+
+
+	public final void main(String[] args) throws Exception {
 
 		pigFactory = new BTConnectTest2();
+
+		pp.loadPersistentValues();
+		pilot.setRotateSpeed(180);
 		
 /*		System.out.println("antes de tomar las medidas del sensor ded distancia");
 		int ot = pigFactory.getDistanceOjosTubos();
@@ -46,36 +66,40 @@ public class Outlet_Connect {
 		System.out.println("opi value is: ");
 		System.out.println(opi);
 */
- 
-
-		PilotProps pp = new PilotProps();
-		pp.loadPersistentValues();
-		float wheelDiameter = Float.parseFloat(pp.getProperty(PilotProps.KEY_WHEELDIAMETER, "5.7"));
-		float trackWidth = Float.parseFloat(pp.getProperty(PilotProps.KEY_TRACKWIDTH, "14.5"));
-		RegulatedMotor leftMotor = PilotProps.getMotor(pp.getProperty(PilotProps.KEY_LEFTMOTOR, "C"));
-		RegulatedMotor rightMotor = PilotProps.getMotor(pp.getProperty(PilotProps.KEY_RIGHTMOTOR, "B"));
-		boolean reverse = Boolean.parseBoolean(pp.getProperty(PilotProps.KEY_REVERSE, "false"));
-		final RotateMoveController pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftMotor, rightMotor, reverse);
-		final LegacyNavigator sn = new LegacyNavigator(wheelDiameter, trackWidth, leftMotor, rightMotor);
-		pilot.setRotateSpeed(180);
 
 		// empieza agarrar tubo
 		Behavior AgarrarTubo = new Behavior() {
 			
 			public boolean takeControl() 
 			{
-				return (pigFactory.getDistanceOjosTubos() / 10) < 4; 
+				return (pigFactory.getDistanceOjosTubos() / 10) < 4 && !tieneTubo; 
 			}
 
 			public void suppress() 
 			{
-				// ToDo: guardaar color en el que estamos para saber la medida del tubo
+				// no hay que hacer nada porque todas las accioens del action finalizan en el action.
 			}
 				
 			public void action() 
 			{
+				// ToDo: Controlar la distancia minima de ojosTubo 
+				// capaz que tenemos que detenernos antes y despues del pilot.Stop() hacer un pilot.rotate(x) para llegar a agarrar el tubo
 				pilot.stop();
-				Motor.A.rotateTo(700);	
+				tieneTubo = true;
+				colorActual = colorAdelante.getColorID();
+				Motor.A.rotateTo(700, true);
+				while (colorActual == 6) 
+				{
+					pilot.rotate(-60);
+					pilot.stop();
+					colorActual = colorAdelante.getColorID();
+				}
+				if (colorActual == 2)
+					medidaTuboAgarrado = 20;
+				else if (colorActual == 5)
+					medidaTuboAgarrado = 15;
+				else if (colorActual == 4)	
+					medidaTuboAgarrado = 10;
 			}
 		};
 
@@ -419,4 +443,27 @@ public class Outlet_Connect {
 		(new Arbitrator(bArray)).start();
 
   	}
+
+	private void moverse() 
+	{
+		pilot.forward();
+	}
+
+	private void mediaVuelta() 
+	{
+		pilot.stop();
+		pilot.rotate(180);
+	}
+
+	private void girarDerecha() 
+	{
+		pilot.stop();
+		pilot.rotate(70);
+	}
+
+	private void girarIzquierda() 
+	{
+		pilot.stop();
+		pilot.rotate(70);
+	}
 }
