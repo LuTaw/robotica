@@ -320,6 +320,7 @@ public class Outlet_Connect {
 
 		// termina depositar tubo
 
+		// Va incluido en detectar falta de tubo
 		Behavior MedirTamañoTuboFaltante = new Behavior() {
 			public boolean takeControl() 
 			{
@@ -338,6 +339,7 @@ public class Outlet_Connect {
 			
 		};
 
+		// Va incluido en detectar falta de tubo
 		Behavior EncontrarCanieria = new Behavior() {
 			public boolean takeControl() 
 			{
@@ -356,6 +358,7 @@ public class Outlet_Connect {
 			
 		};
 
+		// este no estoy segura si va o queda cubierto con los goToRandom
 		Behavior NoCaerseEnNegro = new Behavior() {
 			public boolean takeControl() 
 			{
@@ -374,6 +377,7 @@ public class Outlet_Connect {
 			
 		};
 
+		// se detiene completamente y apaga el roboto
 		Behavior PararRobot = new Behavior() {
 			public boolean takeControl() 
 			{
