@@ -303,13 +303,10 @@ public class Outlet_Connect {
 		Behavior EncontramosEspacioLibre = new Behavior() {
 			public boolean takeControl() 
 			{
-				return false;
+				return pigFactory.getDistanceOjosPlat() > 12;
 			}
 
-			public void suppress() 
-			{
-
-			}
+			public void suppress() {}
 
 			public void action() 
 			{
@@ -397,7 +394,27 @@ public class Outlet_Connect {
 			
 		};
 
-		Behavior[] bArray = { NoCaerseEnNegro, AgarrarTubo, PararRobot, GoToRandom, GoToRandomSinTubo, BuscarAzul, BuscarVerdeConTubo, BuscarVerde, BuscarBlancoConTubo, BuscarBlanco, BuscarTuberiaPrincipal, EncontrarCanieria, MedirTamañoTuboFaltante, EncontramosEspacioLibre, DejarTubo, EncontrarTubo, BuscarColor };
+		//VER SI ES Behavier o Metodo
+		//Tenemos tubo, estamos en azul, anterior verde, detectamos plataforma y no podemos avanzar
+		Behavior DoblarSiguiendoTuberia = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+				System.exit(0);
+			}
+
+			public void action() 
+			{
+				
+			}
+			
+		};
+
+		Behavior[] bArray = { NoCaerseEnNegro, AgarrarTubo, PararRobot, GoToRandom, GoToRandomSinTubo, BuscarAzul, BuscarVerdeConTubo, BuscarVerde, BuscarBlancoConTubo, BuscarBlanco, BuscarTuberiaPrincipal, EncontrarCanieria, MedirTamañoTuboFaltante, EncontramosEspacioLibre, DejarTubo, EncontrarTubo, BuscarColor, DoblarSiguiendoTuberia};
 		Button.waitForAnyPress();
 		(new Arbitrator(bArray)).start();
 
