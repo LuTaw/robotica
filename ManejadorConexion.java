@@ -14,7 +14,7 @@ public class ManejadorConexion
 
 	public ManejadorConexion() { }
 	
-	public static BTConnection getConexion() {
+	public static BTConnection getConexion() throws Exception {
 		if (!isConnected) {
 		
 			String name = "NXT";

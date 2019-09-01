@@ -11,13 +11,56 @@ import lejos.util.Delay;
 
 public class BTConnectTest2
 {
-
 	private static ManejadorConexion mConexion;
 	private static BTConnection btc;
+	private static boolean isConnected = false;
 
-	public BTConnectTest2() {
-		mConexion = new ManejadorConexion();
-		btc = mConexion.getConexion();
+	public BTConnectTest2() /*throws Exception*/ {
+		/*if (!isConnected) {
+		
+			String name = "NXT";
+
+			LCD.drawString("Connecting...", 0, 0);
+			LCD.refresh();
+
+			RemoteDevice btrd = Bluetooth.getKnownDevice(name);
+
+			if (btrd == null)
+			{
+				LCD.clear();
+				LCD.drawString("No such device", 0, 0);
+				LCD.refresh();
+				try {
+	                		Thread.sleep(2000);
+	            		} catch (InterruptedException e) {
+	                		e.printStackTrace();
+	            		}
+				System.exit(1);
+			}
+
+			final byte[] pin = {(byte) '1', (byte) '2', (byte) '3', (byte) '4'};
+			btc = Bluetooth.connect(btrd.getDeviceAddr(),  NXTConnection.LCP, pin);
+
+			if (btc == null)
+			{
+				LCD.clear();
+				LCD.drawString("Connect fail", 0, 0);
+				LCD.refresh();
+				try {
+		                Thread.sleep(2000);
+			    	} catch (InterruptedException e) {
+			        	e.printStackTrace();
+			    	}
+				System.exit(1);
+			}
+
+			LCD.clear();
+			LCD.drawString("Connected", 0, 0);
+			isConnected = true;
+			LCD.refresh();
+
+			return btc;
+		}*/
 	}
 
 	public int getDistanceOjosTubos()
@@ -62,4 +105,6 @@ public class BTConnectTest2
 		}	
 		return sensorValue;
 	}
+
+
 }
