@@ -127,7 +127,7 @@ public class Outlet_Connect {
 		Behavior BuscarBlanco = new Behavior() {
 			public boolean takeControl() 
 			{
-				return false;
+				return colorActual==3 && colorAnterior==2 && !tieneTubo;
 			}
 
 			public void suppress() 
@@ -137,7 +137,12 @@ public class Outlet_Connect {
 
 			public void action() 
 			{
-				pilot.stop();
+				colorActual = colorAdelante.getColorID();
+				while (colorActual == 3) 
+				{
+					moverseRandom();
+				}
+				colorActual = colorAdelante.getColorID();
 				System.exit(0);
 			}
 			
