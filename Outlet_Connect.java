@@ -159,6 +159,26 @@ public class Outlet_Connect {
 			
 		};
 
+		// estamos en color, no tenemos tubo
+		Behavior EncontrarTubo = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+				System.exit(0);
+			}
+
+			public void action() 
+			{
+				pilot.stop();
+				System.exit(0);
+			}
+			
+		};
+
 		// termina el agarrar tubo
 	
 		// empeiza depositar tubo
@@ -279,61 +299,26 @@ public class Outlet_Connect {
 			
 		};
 
+		// Estamos en azul, tenemos tubo y vimos espacio libre
+		Behavior EncontramosEspacioLibre = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
+			
+		};
+
 		// termina depositar tubo
-
-		Behavior Moverse = new Behavior() {
-			public boolean takeControl() 
-			{
-				return false;
-			}
-
-			public void suppress() 
-			{
-
-			}
-
-			public void action() 
-			{
-
-			}
-			
-		};
-
-		Behavior DetectarTubo = new Behavior() {
-			public boolean takeControl() 
-			{
-				return false;
-			}
-
-			public void suppress() 
-			{
-
-			}
-
-			public void action() 
-			{
-
-			}
-			
-		};
-
-		Behavior DectetarFaltaTubo = new Behavior() {
-			public boolean takeControl() 
-			{
-				return false;
-			}
-
-			public void suppress() 
-			{
-
-			}
-
-			public void action() 
-			{
-
-			}
-			
-		};
 
 		Behavior MedirTamañoTuboFaltante = new Behavior() {
 			public boolean takeControl() 
@@ -371,24 +356,6 @@ public class Outlet_Connect {
 			
 		};
 
-		Behavior DetectarColor = new Behavior() {
-			public boolean takeControl() 
-			{
-				return false;
-			}
-
-			public void suppress() 
-			{
-
-			}
-
-			public void action() 
-			{
-
-			}
-			
-		};
-
 		Behavior NoCaerseEnNegro = new Behavior() {
 			public boolean takeControl() 
 			{
@@ -406,25 +373,6 @@ public class Outlet_Connect {
 			}
 			
 		};
-
-		Behavior VolverARumbo = new Behavior() {
-			public boolean takeControl() 
-			{
-				return false;
-			}
-
-			public void suppress() 
-			{
-
-			}
-
-			public void action() 
-			{
-
-			}
-			
-		};
-
 
 		Behavior PararRobot = new Behavior() {
 			public boolean takeControl() 
@@ -445,7 +393,7 @@ public class Outlet_Connect {
 			
 		};
 
-		Behavior[] bArray = { NoCaerseEnNegro, AgarrarTubo, PararRobot, VolverARumbo, DetectarColor, EncontrarCanieria, MedirTamañoTuboFaltante, DectetarFaltaTubo, Moverse, DejarTubo };
+		Behavior[] bArray = { NoCaerseEnNegro, AgarrarTubo, PararRobot, GoToRandom, GoToRandomSinTubo, BuscarAzul, BuscarVerdeConTubo, BuscarVerde, BuscarBlancoConTubo, BuscarBlanco, BuscarTuberiaPrincipal, EncontrarCanieria, MedirTamañoTuboFaltante, EncontramosEspacioLibre, DejarTubo, EncontrarTubo, BuscarColor };
 		Button.waitForAnyPress();
 		(new Arbitrator(bArray)).start();
 

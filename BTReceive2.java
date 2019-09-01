@@ -66,7 +66,7 @@ public class BTReceive2 extends Thread {
 	                		e.printStackTrace();
 	            		}*/
 				Delay.msDelay(500);
-				int sensorPort = (int) dis.readByte();
+				int sensorPort = dis.readInt();
 				//Delay.msDelay(500);
 				System.out.println("el puerto que esta leyendo es: " + sensorPort);
 				int sensorValue;
@@ -79,7 +79,7 @@ public class BTReceive2 extends Thread {
 				else 
 					sensorValue = opticalDistance.getDistance();
 				
-				dos.writeByte(sensorValue);
+				dos.writeInt(sensorValue);
 				dos.flush();
 				dos.close();
 				dis.close();
