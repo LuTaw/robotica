@@ -59,6 +59,7 @@ public class Outlet_Connect {
 		final LegacyNavigator sn = new LegacyNavigator(wheelDiameter, trackWidth, leftMotor, rightMotor);
 		pilot.setRotateSpeed(180);
 
+		// empieza agarrar tubo
 		Behavior AgarrarTubo = new Behavior() {
 			
 			public boolean takeControl() 
@@ -77,7 +78,91 @@ public class Outlet_Connect {
 				Motor.A.rotateTo(700);	
 			}
 		};
+
+		// estamos en blano y no tenemos tubo
+		Behavior BuscarColor = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+				System.exit(0);
+			}
+
+			public void action() 
+			{
+				pilot.stop();
+				System.exit(0);
+			}
+			
+		};
+
+		// estamos en verde y no tenemos tubo
+		Behavior BuscarBlanco = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+				System.exit(0);
+			}
+
+			public void action() 
+			{
+				pilot.stop();
+				System.exit(0);
+			}
+			
+		};
+
+		// estamos en azul, no tenemos tubo y color anterior es verde
+		Behavior BuscarVerde = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+				System.exit(0);
+			}
+
+			public void action() 
+			{
+				pilot.stop();
+				System.exit(0);
+			}
+			
+		};
+
+		// estamos en negro, no tenemos tubo y tenemos guardado el color anterior
+		Behavior GoToRandom = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+				System.exit(0);
+			}
+
+			public void action() 
+			{
+				pilot.stop();
+				System.exit(0);
+			}
+			
+		};
+
+		// termina el agarrar tubo
 	
+		// empeiza depositar tubo
+
 		Behavior DejarTubo = new Behavior() {
 			
 			public boolean takeControl() 
@@ -96,6 +181,105 @@ public class Outlet_Connect {
 			}
 		};
 
+		// Estamos en azul tenemos tubo y anterior es verde
+		Behavior BuscarTuberiaPrincipal = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
+			
+		};
+
+		// estamos en color, tenemos tubo y color anterior no es verde
+		// Probablemente sea el mismo BuscarBlanco que el anterior queda renombrado por las dudas
+		Behavior BuscarBlancoConTubo = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
+			
+		};
+
+		// Estamos en blanco y tenemos tubo
+		// probablemente sea el mismo buscarverde que el anterior pero queda renombrado por las dudas
+		Behavior BuscarVerdeConTubo = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
+			
+		};
+
+		// Estamos en verde y tenemos tubo
+		Behavior BuscarAzul = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
+			
+		};
+
+		// Estamos en negro, tenemos tubo y sabemos color anterior
+		// probablemente los dos go to random son iguales por ahora lo renombro
+		Behavior GoToRandomSinTubo = new Behavior() {
+			public boolean takeControl() 
+			{
+				return false;
+			}
+
+			public void suppress() 
+			{
+
+			}
+
+			public void action() 
+			{
+
+			}
+			
+		};
+
+		// termina depositar tubo
 
 		Behavior Moverse = new Behavior() {
 			public boolean takeControl() 
