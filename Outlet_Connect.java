@@ -103,7 +103,7 @@ public class Outlet_Connect {
 			}
 		};
 
-		// estamos en blano y no tenemos tubo
+		// estamos en blanco y no tenemos tubo
 		Behavior BuscarColor = new Behavior() {
 			public boolean takeControl() 
 			{
@@ -147,18 +147,23 @@ public class Outlet_Connect {
 		Behavior BuscarVerde = new Behavior() {
 			public boolean takeControl() 
 			{
-				return false;
+				return (!tieneTubo && colorAnterior == 3 && colorAdelante.getColorID() == 2);
 			}
 
 			public void suppress() 
 			{
-				System.exit(0);
+				// no hay que hacer nada todas las accioens terminan en el action 
 			}
 
 			public void action() 
 			{
 				pilot.stop();
-				System.exit(0);
+				this.mediaVuelta();
+				while (colorAdelante.getColorID() == 2)
+				{
+					this.moverse();
+				}
+				colorAnterior = colorAdelante.getColorID();
 			}
 			
 		};
@@ -452,7 +457,7 @@ public class Outlet_Connect {
 	private void mediaVuelta() 
 	{
 		pilot.stop();
-		pilot.rotate(180);
+		pilot.rotate(180, true);
 	}
 
 	private void girarDerecha() 
