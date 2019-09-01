@@ -81,7 +81,7 @@ public class Outlet_Connect {
 
 			public void suppress() 
 			{
-				suppress = true;
+				//suppress = true;
 			}
 				
 			public void action() 
@@ -111,7 +111,7 @@ public class Outlet_Connect {
 		Behavior BuscarColor = new Behavior() {
 			public boolean takeControl() 
 			{
-				return pigFactory.getColorID == 6 && !tieneTubo; 
+				return colorAdelante.getColorID() == 6 && !tieneTubo; 
 			}
 
 			public void suppress() {}
@@ -147,7 +147,7 @@ public class Outlet_Connect {
 			{
 				while (colorAdelante.getColorID() == 3) 
 				{
-					this.moverseRandom();
+					moverseRandom();
 				}
 				colorAnterior = colorAdelante.getColorID();
 			}
@@ -163,18 +163,19 @@ public class Outlet_Connect {
 
 			public void suppress() 
 			{
-				suppress = true; 
+				//suppress = true; 
 			}
 
 			public void action() 
 			{
 				pilot.stop();
-				this.mediaVuelta();
+				mediaVuelta();
 				while (colorAdelante.getColorID() == 2)
 				{
-					this.moverseRandom();
+					moverseRandom();
 				}
-				colorAnterior = colorAdelante.getColorID();
+				colorAnterior = colorActual;
+				colorActual = colorAdelante.getColorID();
 			}
 			
 		};
@@ -188,22 +189,22 @@ public class Outlet_Connect {
 
 			public void suppress() 
 			{
-				suppress = true;
+				//suppress = true;
 			}
 
 			public void action() 
 			{
 				pilot.stop();
-				this.mediaVuelta();
+				mediaVuelta();
 				while (colorAdelante.getColorID() == 1)
 				{
-					this.moverseRandom();
+					moverseRandom();
 				}
 			}
 			
 		};
 
-		// estamos en color, no tenemos tubo
+		// estamos en color, no tenemos tubo, pensarlo despues
 		Behavior EncontrarTubo = new Behavior() {
 			public boolean takeControl() 
 			{
@@ -231,17 +232,21 @@ public class Outlet_Connect {
 			
 			public boolean takeControl() 
 			{
-				return pigFactory.getDistanceOjosPlat() < 12;
+				return (pigFactory.getDistanceOjosPlat() < 12 && tieneTubo);
 			}
 		
-			public void suppress() {}
+			public void suppress() 
+			{
+				//suppress = true;
+			}
 
 			public void action() 
 			{
-				// sleep por x tiempo que tenemos que ver despues para que avance hasta llegar a la plataforma para depositar  el tubo
+				pilot.forward();
 				pilot.stop();
 				Motor.A.rotateTo(-700, true);
-				//Motor.A.resetTachoCount();
+				tieneTubo = false;
+				medidaTuboAgarrado = 0;
 			}
 		};
 
@@ -292,17 +297,22 @@ public class Outlet_Connect {
 		Behavior BuscarVerdeConTubo = new Behavior() {
 			public boolean takeControl() 
 			{
-				return false;
+				return (colorAdelante.getColorID() == 6 && tieneTubo && (colorAnterior == 3 || colorAnterior == 5 || colorAnterior == 4));
 			}
 
 			public void suppress() 
 			{
-
+				// no es necesario hacer nada
 			}
 
 			public void action() 
 			{
-
+				while (colorAdelante.getColorID() == 6)
+				{
+					moverseRandom();
+				}
+				colorAnterior = colorActual;
+				colorActual = colorAdelante.getColorID();
 			}
 			
 		};
@@ -408,29 +418,29 @@ public class Outlet_Connect {
 
   	}
 
-	private void moverse() 
+	private final void moverse() 
 	{
 		pilot.forward();
 	}
 
-	private void moverseRandom() 
+	private final void moverseRandom() 
 	{
 		pilot.forward();
 	}
 
-	private void mediaVuelta() 
+	private final void mediaVuelta() 
 	{
 		pilot.stop();
 		pilot.rotate(180, true);
 	}
 
-	private void girarDerecha() 
+	private final void girarDerecha() 
 	{
 		pilot.stop();
 		pilot.rotate(70);
 	}
 
-	private void girarIzquierda() 
+	private final void girarIzquierda() 
 	{
 		pilot.stop();
 		pilot.rotate(70);
