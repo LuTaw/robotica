@@ -27,11 +27,15 @@ public class Outlet_Connect {
 	/*private static OpticalDistanceSensor ojoTubos = new OpticalDistanceSensor(SensorPort.S3);
 	private static UltrasonicSensor ojoPlat = new UltrasonicSensor(SensorPort.S4);*/
 	private static final ColorSensor colorAdelante = new ColorSensor(SensorPort.S2);
+	private static final UltrasonicSensor ojoPlat = new UltrasonicSensor(SensorPort.S3);
 
 	private boolean tieneTubo = false;
+	private boolean encontoTuberia = false;
 	private int colorAnterior = 0;
 	private int colorActual = 0;
 	private int medidaTuboAgarrado = 0;
+	private int distanciaTuberia = 0;
+	private int espaciosLibres = 0;
 
 
 	private final PilotProps pp = new PilotProps();
@@ -250,19 +254,22 @@ public class Outlet_Connect {
 		Behavior BuscarTuberiaPrincipal = new Behavior() {
 			public boolean takeControl() 
 			{
-				return false;
+				return (pigFactory.getColorID == 2 && colorAnterior == 3 && tieneTubo);
 			}
 
-			public void suppress() 
-			{
-
-			}
+			public void suppress() {}
 
 			public void action() 
 			{
-
+				tieneTubo = true;
+				colorAnterior = 3;
+				colorActual = colorAdelante.getColorID();
+				distanciaTuberia = 
+				if (colorActual == 2 && ojoPlat.getDistanceOjosPlat < 12){
+					girarIzquierda();
+					encontoTuberia = true;
+				}
 			}
-			
 		};
 
 		// estamos en color, tenemos tubo y color anterior no es verde
@@ -366,32 +373,12 @@ public class Outlet_Connect {
 			
 		};
 
-		// Va incluido en detectar falta de tubo
-		Behavior EncontrarCanieria = new Behavior() {
-			public boolean takeControl() 
-			{
-				return false;
-			}
-
-			public void suppress() 
-			{
-
-			}
-
-			public void action() 
-			{
-
-			}
-			
-		};
-
 		// se detiene completamente y apaga el roboto
 		Behavior PararRobot = new Behavior() {
 			public boolean takeControl() 
 			{
-				return false;
+				return (ojoPlat.getDistanceOjosPlat < 12 && espaciosLibres == 5);
 			}
-
 			public void suppress() 
 			{
 				System.exit(0);
