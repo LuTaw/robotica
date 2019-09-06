@@ -6,6 +6,7 @@ public class MetodosGlobales {
 	
 	private static boolean tengoTubo;
 	private static boolean faltaTubo;
+	private static boolean encontrePlataforma;
 	private static int colorAnterior; 
 	//private static String estado;
 	private static MetodosGlobales mg;
