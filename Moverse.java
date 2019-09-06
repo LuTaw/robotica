@@ -9,18 +9,16 @@ import java.io.*;
 public class Moverse implements Behavior 
 {
 
-	private ColorSensor colorAdelante  = new ColorSensor(SensorPort.S2);
+	private ColorSensor colorAdelante = new ColorSensor(SensorPort.S2);
 	private static ControladorPilot cp;
 
 	public Moverse(ControladorPilot n) 
 	{
-		//System.out.println("esta en el constructor de moverse");
 		cp = n;
 	}
 
 	public boolean takeControl() 
 	{
-		//System.out.println("esta evaluando el takecontrol de moverse");
 		return (colorAdelante.getColorID() != 7);
 	}
 
@@ -30,7 +28,10 @@ public class Moverse implements Behavior
 	}
 
 	public void action() 
-	{
-		cp.getRandomPosition();
+	{System.out.println("Estamos en el action de moverse");
+		if (cp.isPathCompleted()) 
+		{
+			cp.getRandomPosition();
+		}	
 	}
 }

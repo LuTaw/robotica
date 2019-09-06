@@ -8,12 +8,12 @@ import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.SensorPort;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.navigation.*;
-import lejos.robotics.navigation.LegacyNavigator;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.PilotProps;
 import lejos.nxt.TouchSensor;
 import lejos.nxt.addon.OpticalDistanceSensor;
+import lejos.robotics.navigation.DifferentialPilot;
 
 import java.io.*; 
 
@@ -28,44 +28,88 @@ public class ControladorPilot {
 	private Waypoint wTarget;
 	private Waypoint target;
 	private static ControladorPilot cp;
-	private PilotProps  pp = new PilotProps();
-	private DifferentialPilot pilot = new DifferentialPilot(2.1f, 4.4f, Motor.B, Motor.C, false);
-	private Navigator nav = new Navigator(pilot);
+	private DifferentialPilot pilot;
+	private LegacyNavigator sn;
+	private Navigator nav;
+	private boolean tieneTubo = false;
+	private int colorActual = 6;
+	private int colorAnterior = 6;
 
 	public ControladorPilot() 
-	{
-
+	{ 	
+		pilot = new DifferentialPilot(1.8f, 5.2f, Motor.B, Motor.C, false);
+		nav = new Navigator(pilot);
 	}
 
 	public static ControladorPilot getInstance() 
 	{
-		//System.out.println("Acaba de entrar al getINstance");
 		if (cp == null) 
 		{
-		//System.out.println("Entro al if");
 			cp = new ControladorPilot();
 		}
-		//System.out.println("Salio del if");
 		return cp;
 	}
 
 	public void getRandomPosition() 
 	{
-		//System.out.println("Acaba de entrar al getRandomPosition");
 		if (cp == null) 
 		{
-		//System.out.println("el cp era null");
 			cp = getInstance();
 		}
-		//System.out.println("antes de obtener el wpoint");
 		wTarget = getTarget(Math.random() * AREA_WIDTH, Math.random() * AREA_LENGTH);
-		System.out.println("antes de hacer el goTo");
 		nav.goTo(wTarget);
+	}
+
+	public boolean isPathCompleted() 
+	{
+		return nav.pathCompleted();
+	}
+
+	public void volverParaAtras() 
+	{
+		Motor.B.backward();
+		Motor.C.backward();
+	}
+
+	public void stopPilot()
+	{
+		Motor.B.stop();
+        	Motor.C.stop();
 	}
 
 	public void stop()
 	{
 		nav.stop();
+	}
+
+	public boolean getTieneTubo() 
+	{
+		return this.tieneTubo;
+	}
+
+	public void setTieneTubo(boolean value) 
+	{
+		 this.tieneTubo = value;
+	}
+
+	public int getColorActual() 
+	{
+		return this.colorActual;
+	}
+
+	public void setColorActual(int value) 
+	{
+		 this.colorActual = value;
+	}
+
+	public int getColorAnterior() 
+	{
+		return this.colorAnterior;
+	}
+
+	public void setColorAnterior(int value) 
+	{
+		 this.colorAnterior = value;
 	}
 
 	private Waypoint getTarget(double x, double y)
