@@ -24,7 +24,7 @@ public class BuscarBlancoConTubo implements Behavior
 	public boolean takeControl() 
 	{
 		return ((colorAdelante.getColorID() == 0 || colorAdelante.getColorID() == 3 || colorAdelante.getColorID() == 2) 
-			&& (colorAnterior == 0 ||colorAnterior == 3 || colorAnterior == 2 || colorAnterior == 1) 
+			&& (colorAnterior == 0 ||colorAnterior == 3 || colorAnterior == 2 || colorAnterior == 6) 
 			&& cp.getTieneTubo());
 	}
 
@@ -35,14 +35,11 @@ public class BuscarBlancoConTubo implements Behavior
 
 	public void action() 
 	{
+		cp.setColorAnterior(colorActual);
+		cp.setColorActual(colorAdelante.getColorID());
 		while (colorAdelante.getColorID() == 0 || colorAdelante.getColorID() == 3 || colorAdelante.getColorID() == 2) 
 		{
 			cp.getRandomPosition();
-		}
-		if (colorAdelante.getColorID() != 0 || colorAdelante.getColorID() != 3 || colorAdelante.getColorID() != 2) 
-		{
-			cp.setColorAnterior(colorActual);
-			cp.setColorActual(colorAdelante.getColorID());
 		}
 	}
 }

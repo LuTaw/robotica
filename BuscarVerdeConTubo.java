@@ -36,14 +36,11 @@ public class BuscarVerdeConTubo implements Behavior
 
 	public void action() 
 	{
-		while (colorAdelante.getColorID() == 0 || colorAdelante.getColorID() == 3 || colorAdelante.getColorID() == 2) 
+		cp.setColorAnterior(colorActual);
+		cp.setColorActual(colorAdelante.getColorID());
+		while (colorAdelante.getColorID() == 6) 
 		{
 			cp.getRandomPosition();
-		}
-		if (colorAdelante.getColorID() != 0 || colorAdelante.getColorID() != 3 || colorAdelante.getColorID() != 2) 
-		{
-			cp.setColorAnterior(colorActual);
-			cp.setColorActual(colorAdelante.getColorID());
 		}
 	}
 }
