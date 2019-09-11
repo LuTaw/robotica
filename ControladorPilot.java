@@ -32,8 +32,12 @@ public class ControladorPilot {
 	private LegacyNavigator sn;
 	private Navigator nav;
 	private boolean tieneTubo = false;
+	private boolean faltaTubo = false;
 	private int colorActual = 6;
 	private int colorAnterior = 6;
+	private boolean encontrePlat = false;
+	private boolean fatlaTuboDer = false;
+	private boolean fatlaTuboIzq = false;
 
 	public ControladorPilot() 
 	{ 	
@@ -117,4 +121,82 @@ public class ControladorPilot {
     		target = new Waypoint(x, y);
 		return target;
 	}
+
+	public boolean getFaltaTubo() {
+		return faltaTubo;
+	}
+
+	public void setFaltaTubo(boolean ft) {
+		faltaTubo = ft;
+	}
+
+	public void avanzar(){
+		Motor.B.forward();
+        	Motor.C.forward();
+	}
+
+	public void detenerse(){
+		Motor.B.stop();
+        Motor.C.stop();
+	}
+
+	public void retroceder(){
+		Motor.B.backward();
+        Motor.C.backward();
+	}
+
+	public boolean getEncontrePlataforma(){
+		return this.encontrePlat;
+	}
+
+	public void setEncontrePlataforma(boolean value){
+		this.encontrePlat = value;
+	}
+
+	public boolean getFaltaTuboDerecha(){
+		return this.fatlaTuboDer;
+	}
+
+	public void setFaltaTuboDerecha(boolean value){
+		this.fatlaTuboDer = value;
+	}
+
+	public boolean getFaltaTuboIzquierda(){
+		return this.fatlaTuboIzq;
+	} 
+
+	public void setFaltaTuboIzquierda(boolean value){
+		this.fatlaTuboIzq = value;
+	}
+
+	public void girar(Boolean lado, int tiempo){
+		if (lado) {
+			Motor.B.backward();
+			Motor.C.forward();
+			Delay.msDelay(tiempo);
+			Motor.C.stop();
+			Motor.B.stop();
+		}
+		else {
+			Motor.C.backward();
+			Motor.B.forward();
+			Delay.msDelay(tiempo);
+			Motor.C.stop();
+			Motor.B.stop();
+		}
+	}
+
+	public void polea(Boolean agarrarSoltar){
+		if (agarrarSoltar) {
+			Motor.A.forward();
+			Delay.msDelay(100);
+			Motor.A.stop();
+		}
+		else {
+			Motor.A.backward();
+			Delay.msDelay(100);
+			Motor.A.stop();
+		}
+	}
+
 }

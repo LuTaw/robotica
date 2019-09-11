@@ -25,7 +25,7 @@ public class AgarrarTubo implements Behavior
 	{
 		return ((155 <= ojoTubos.getDistance() && ojoTubos.getDistance() <= 165) 
 			&& (!cp.getTieneTubo()) 
-			&& (colorAdelante.getColorID == 3 || colorAdelante.getColorID == 2 || colorAdelante.getColorID == 0)); 
+			&& (colorAdelante.getColorID() == 3 || colorAdelante.getColorID() == 2 || colorAdelante.getColorID() == 0)); 
 	}
 
 	public void suppress() 
@@ -35,9 +35,11 @@ public class AgarrarTubo implements Behavior
 		
 	public void action() 
 	{
+		cp.stop();
 		cp.setTieneTubo(true);
 		cp.setColorAnterior(colorActual);
 		cp.setColorActual(colorAdelante.getColorID());
+		cp.polea(false);
 		//pilot.rotate(-60);
 		//pilot.stop();
 		if (colorAdelante.getColorID() == 2)

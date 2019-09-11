@@ -1,7 +1,0 @@
-negro 7
-azul 2
-verde 1
-blanco 6
-amarillo 3 
-rojo 0
-
